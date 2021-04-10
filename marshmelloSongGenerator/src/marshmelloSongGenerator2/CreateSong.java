@@ -10,7 +10,7 @@ public abstract class CreateSong {
 	/**
 	 * Allows this class to access files in storage and save/open project files
 	 */
-	private ProjectManager projectManager;
+	protected ProjectManager projectManager;
 	
 	public CreateSong() {
 		projectManager = new ProjectManager();
