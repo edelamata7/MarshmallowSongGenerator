@@ -27,10 +27,18 @@ public class SongEditor extends CreateSong {
 	 */
 	public SongEditor() {
 		
-		/*
-		 * tests:
-		 * Test if projectName is the name of a file in the projectFiles folder?
-		 */
+		
+		
+		
+		assert (new File(projectManager.getStorageLocation()+"\\projectFiles\\"+projectName+".txt").exists()) : "Error: No file with the given filename exists in the projectFiles folder"; //Checks that a file can be found in the project files folder that matches the name of the file being edited
+		for(int i=0; i<availableSoundFiles.size(); i++) {
+			assert(availableSoundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every availableSoundFile actually exists
+			assert(projectManager.checkFileType(availableSoundFiles.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every availableSoundFile is a wav file
+		}
+		for(int i=0; i<projectSoundFiles.size(); i++) {
+			assert(projectSoundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every projectSoundFile actually exists
+			assert(projectManager.checkFileType(projectSoundFiles.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every projectSoundFile is a wav file
+		}
 		assert(this.projectName != null) : "projectName cannot be null"; //ensure the project has a name
 		assert(this.projectSoundFiles != null) : "projectSoundFiles cannot be null"; //ensure there are some project files to edit
 		assert(this.availableSoundFiles != null) : "availableSoundFiles cannot be null"; //ensure there are some available sound files
@@ -61,9 +69,18 @@ public class SongEditor extends CreateSong {
 	public void deleteFile(String name) {
 		/*
 		 * test:
-		 * test that the size of the projectSoundFiles list has decreased by 1
 		 * ensure that the deleted file is removed from the projectSoundFiles arrayList (how if file can appear multiple times? using specific test case?)
 		 */
+		
+		int projectSoundFiles_initialSize = projectSoundFiles.size();
+		
+		
+		
+		
+		
+		
+		assert(projectSoundFiles.size() == projectSoundFiles_initialSize-1) : "Error: projectSoundFiles size should have decreased by 1"; //Check that the size of project sound files has decreased by 1 now that a file has been removed from it
+		
 	}
 	
 	/**
@@ -78,6 +95,15 @@ public class SongEditor extends CreateSong {
 		 * test that the size of the projectSoundFiles list has increased by 1
 		 * test that the new file appears in the projectSoundFiles list (at the location or just in general? TBD)
 		 */
+		
+		int projectSoundFiles_initialSize = projectSoundFiles.size();
+		
+		
+		
+		
+		
+		
+		assert(projectSoundFiles.size() == projectSoundFiles_initialSize+1) : "Error: projectSoundFiles size should have increased by 1"; //Check that the size of project sound files has increased by 1 now that a file has been added to it
 	}
 	
 	/**
@@ -85,12 +111,16 @@ public class SongEditor extends CreateSong {
 	 * @param newFile - file to replace the oldFile
 	 * @param oldFile - file in the projectSoundFiles list to be replaced
 	 */
-	public void modify(String newFile, String oldFile) { //oldFile may become an int based on future implementation
-		/*
-		 * test:
-		 * test that the size of the projectSoundFiles list remains the same
-		 * test that the file in the specified location has been changed?
-		 */
+	public void modify(String newFile, int oldFile) { //oldFile may become an int based on future implementation
+		int projectSoundFiles_initialSize = projectSoundFiles.size();
+		String oldFile_name = projectSoundFiles.get(oldFile).getName();
+		
+		
+		
+		
+		
+		assert(projectSoundFiles.size() == projectSoundFiles_initialSize) : "Error: projectSoundFiles should have remained the same size"; //Check that the size of projectSoundFiles remains the same
+		assert(projectSoundFiles.get(oldFile).getName() != oldFile_name) : "Error: the old file in projectSoundFiles should not equal the newFile"; //Checks that the oldFile has actually changed and isnt the same file
 	}
 	
 }

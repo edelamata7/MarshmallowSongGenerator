@@ -44,7 +44,7 @@ public abstract class CreateSong {
 		
 		
 		File newFile = new File("filepath/"+filename+".wav"); //created separately from the newWavFile to allow testing it. This technically isnt necessary
-		assert (newFile.getName() == filename); //check that the new wavfile has the correct name
+		assert (newFile.getName() == filename) : "Error: the new wavFile doesn't have the correct filename"; //check that the new wavfile has the correct name
 		
 		try {
 			//newWavFile(new File("filepath/filename.wav"), numChannels, numFrames, validBits, sampleRate);
@@ -62,7 +62,7 @@ public abstract class CreateSong {
 			for (int i=0; i < wavFileList.size(); i++) {
 				durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
 			}
-			assert (durationTest == completeWavFile.getNumFrames()/completeWavFile.getSampleRate()); //Check if the duration of the complete wav file equals the duration of all the given wavFiles
+			assert (durationTest == completeWavFile.getNumFrames()/completeWavFile.getSampleRate()) : "Error: The duration of the new wavFile doesn't match the duration of the combined given soundFiles"; //Check if the duration of the complete wav file equals the duration of all the given wavFiles
 			
 		} catch (IOException | WavFileException e) {
 			e.printStackTrace();
@@ -77,6 +77,12 @@ public abstract class CreateSong {
 	 */
 	private void createProjectFile(ArrayList<File> fileList, String filename) {
 		
+		for(int i=0; i<fileList.size(); i++) {
+			assert(fileList.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every given file actually exists
+			assert(projectManager.checkFileType(fileList.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every given file is a wav file
+		}
+		
+		projectManager.saveProject(fileList, filename);
 	}
 	
 	/**
@@ -86,9 +92,14 @@ public abstract class CreateSong {
 	 */
 	public ArrayList<WavFile> compileSoundFiles(ArrayList<File> soundFiles) { //Should throw an exception if the given file type cannot be converted in to a wavFile? need to look into that further
 		
+		for(int i=0; i<soundFiles.size(); i++) {
+			assert(soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every given file actually exists
+			assert(projectManager.checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every given file is a wav file
+		}
+		
+		
 		/*
 		 * Tests:
-		 * test each given file is a wav file?
 		 * test each created wavFile has channels/validBits/sampleRate greater than 0? or is not null?
 		 */
 		return null;

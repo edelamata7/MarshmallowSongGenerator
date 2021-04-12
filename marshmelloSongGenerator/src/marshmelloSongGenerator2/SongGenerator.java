@@ -22,11 +22,25 @@ public class SongGenerator extends CreateSong {
 	 */
 	@Override
 	protected ProjectList createProjectList(ArrayList<File> soundFiles) {
+		for(int i=0; i<soundFiles.size(); i++) {
+			assert(soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every given file actually exists
+			assert(projectManager.checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every given file is a wav file
+		}
 		
-		/*
-		 * Tests:
-		 * Check if the duration of the final wavFile list is greater than the minimum song length
-		 */
+		
+		
+		
+		ArrayList<WavFile> wavFileList = new ArrayList<WavFile>();
+		int minimumLength = 0;
+		
+		
+		
+		
+		int durationTest = 0;
+		for (int i=0; i < wavFileList.size(); i++) {
+			durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
+		}
+		assert (durationTest >= minimumLength) : "Error: The duration of the generated list of wavFiles is less than the allowed minimum duration of a complete song"; //Check if the duration of the generated list of wavFiles combined's duration is greater than the minimum duration
 		
 		return null;
 	}
@@ -36,10 +50,15 @@ public class SongGenerator extends CreateSong {
 	 * @return A string of a unique name
 	 */
 	private String createName() {
-		/*
-		 * Tests:
-		 * Check that the created name doesn't equal any of the names currently in the projectFiles folder
-		 */
+		String newName = "";
+		ArrayList<File> projectFiles = projectManager.getProjectFiles();
+		
+		
+		for(int i=0; i < projectFiles.size(); i++) {
+			assert(newName != projectFiles.get(i).getName()) : "Error: Newly generated name is already used in the projectFiles folder"; //Checks to make sure the new name isnt already in the projectFiles folder
+		}
+		
+		
 		return null;
 	}
 
