@@ -1,9 +1,11 @@
 package marshmelloSongGenerator2;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import wavFile.WavFile;
+import wavFile.WavFileException;
 
 public abstract class CreateSong {
 	
@@ -14,6 +16,7 @@ public abstract class CreateSong {
 	
 	public CreateSong() {
 		projectManager = new ProjectManager();
+		assert(this.projectManager != null) : "ProjectManager cannot be null"; //Ensure that it creates a project manager
 	}
 	
 	/**
@@ -32,6 +35,39 @@ public abstract class CreateSong {
 	 */
 	private void createCompleteWavFile(ArrayList<WavFile> wavFileList, String filename) {
 		
+		/*
+		 * Tests:
+		 * Check if the buffer loads each wavfile correctly?
+		 * Check that it switches to the next wavFile in the correct order?
+		 * 
+		 */
+		
+		
+		File newFile = new File("filepath/"+filename+".wav"); //created separately from the newWavFile to allow testing it. This technically isnt necessary
+		assert (newFile.getName() == filename); //check that the new wavfile has the correct name
+		
+		try {
+			//newWavFile(new File("filepath/filename.wav"), numChannels, numFrames, validBits, sampleRate);
+			/*
+			 * Note: Have to ensure each given file:
+			 * 	Has the same number of channels?
+			 * 	has the same number of validBits?
+			 * 	has the same number sampleRate?
+			 * Or does this not matter? Can some be different but other have to be the same? Need to research/test further
+			 */
+			WavFile completeWavFile = WavFile.newWavFile(newFile, 0, 0, 0, 0); //
+			
+			
+			int durationTest = 0;
+			for (int i=0; i < wavFileList.size(); i++) {
+				durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
+			}
+			assert (durationTest == completeWavFile.getNumFrames()/completeWavFile.getSampleRate()); //Check if the duration of the complete wav file equals the duration of all the given wavFiles
+			
+		} catch (IOException | WavFileException e) {
+			e.printStackTrace();
+		} 
+		
 	}
 	
 	/**
@@ -49,6 +85,12 @@ public abstract class CreateSong {
 	 * @return Returns an arrayList of wavFile objects created using the file objects in the given soundFiles array
 	 */
 	public ArrayList<WavFile> compileSoundFiles(ArrayList<File> soundFiles) { //Should throw an exception if the given file type cannot be converted in to a wavFile? need to look into that further
+		
+		/*
+		 * Tests:
+		 * test each given file is a wav file?
+		 * test each created wavFile has channels/validBits/sampleRate greater than 0? or is not null?
+		 */
 		return null;
 	}
 	

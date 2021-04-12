@@ -10,7 +10,9 @@ public class SongGenerator extends CreateSong {
 	 * Calls the methods in the SongGenerator class to create a new song
 	 */
 	public void generateSong() {
-		
+		ProjectList newProject = createProjectList(projectManager.getSoundFiles());
+		String projectName = createName();
+		createProject(newProject, projectName);
 	}
 	
 	/**
@@ -21,6 +23,11 @@ public class SongGenerator extends CreateSong {
 	@Override
 	protected ProjectList createProjectList(ArrayList<File> soundFiles) {
 		
+		/*
+		 * Tests:
+		 * Check if the duration of the final wavFile list is greater than the minimum song length
+		 */
+		
 		return null;
 	}
 	
@@ -29,6 +36,10 @@ public class SongGenerator extends CreateSong {
 	 * @return A string of a unique name
 	 */
 	private String createName() {
+		/*
+		 * Tests:
+		 * Check that the created name doesn't equal any of the names currently in the projectFiles folder
+		 */
 		return null;
 	}
 

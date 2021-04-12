@@ -27,6 +27,8 @@ public class ProjectList {
 	public ProjectList(ArrayList<WavFile> wavFiles, ArrayList<File> files) {
 		this.wavFiles = wavFiles;
 		this.files = files;
+		assert(this.files != null) : "files cannot be null";
+		assert(this.wavFiles != null) : "wavFiles cannot be null"; //might change in the future b/c a wavFiles arrayList can be created from the files arrayList... but this case shouldnt be necessary to handle so why bother?
 	}
 	
 	public ArrayList<WavFile> getWavFiles() {

@@ -2,6 +2,7 @@ package marshmelloSongGenerator2;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import wavFile.WavFile;
 
@@ -19,13 +20,24 @@ public class StorageManager {
 	 */
 	public StorageManager() {
 		
+		/*
+		 * Tests:
+		 * Testcase for when there is no storage location: a new one is made appropriately
+		 * Testcase for when there is a storage location: it is found appropriately
+		 * Tests the the master storage folder has a soundFiles and projectFiles folder in it: if 1 or more is missing create the missing folders
+		 */
+		assert (storageLocation != null) : "storageLocation cannot be null"; //
 	}
 	
 	/**
 	 * @return Returns a File array of all the sound files in the sound files folder. Should return null if there are no sound files.
 	 */
-	public File[] getSoundFiles() { 
+	public ArrayList<File> getSoundFiles() {
 		
+		/*
+		 * Tests:
+		 * ensure it only gets wav files from the soundFiles folder?
+		 */
 		return null;
 	}
 	
@@ -37,6 +49,12 @@ public class StorageManager {
 	 */
 	public File getSoundFile(String name) throws FileNotFoundException { //Note: This exception might need to change in the future, I'm not sure if its the best one to use here
 		
+		/*
+		 * Tests:
+		 * testcase for searching for a specific file that does exist: file is found correctly
+		 * testcase for searching for a file that doesnt exist: throws an error
+		 */
+		
 		return null;
 	}
 	
@@ -44,8 +62,12 @@ public class StorageManager {
 	 * 
 	 * @return Returns a File array of all the project files in the project files folder. Should return null if there are no sound files.
 	 */
-	public File[] getProjectFiles() {
+	public ArrayList<File> getProjectFiles() {
 		
+		/*
+		 * Tests:
+		 * Ensure it only gets project files from the projectFiles folder?
+		 */
 		return null;
 	}
 	
@@ -56,6 +78,12 @@ public class StorageManager {
 	 * @return A File object of the desired file
 	 */
 	public File getProjectFile(String name) throws FileNotFoundException { //Note: This exception might need to change in the future, I'm not sure if its the best one to use here
+		
+		/*
+		 * Tests:
+		 * testcase for searching for a specific file that does exist: file is found correctly
+		 * testcase for searching for a file that doesnt exist: throws an error
+		 */
 		
 		return null;
 	}
