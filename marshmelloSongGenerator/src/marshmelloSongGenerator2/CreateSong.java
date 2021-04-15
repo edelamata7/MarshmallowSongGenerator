@@ -15,8 +15,13 @@ public abstract class CreateSong {
 	protected ProjectManager projectManager;
 	
 	public CreateSong() {
-		projectManager = new ProjectManager();
-		assert(this.projectManager != null) : "ProjectManager cannot be null"; //Ensure that it creates a project manager
+		try {
+			projectManager = new ProjectManager();
+			assert(this.projectManager != null) : "ProjectManager cannot be null"; //Ensure that it creates a project manager
+		} catch (Exception e) {
+			
+		}
+		
 	}
 	
 	/**
