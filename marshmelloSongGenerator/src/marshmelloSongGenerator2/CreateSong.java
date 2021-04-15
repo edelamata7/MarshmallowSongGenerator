@@ -91,18 +91,27 @@ public abstract class CreateSong {
 	 * @return Returns an arrayList of wavFile objects created using the file objects in the given soundFiles array
 	 */
 	public ArrayList<WavFile> compileSoundFiles(ArrayList<File> soundFiles) { //Should throw an exception if the given file type cannot be converted in to a wavFile? need to look into that further
-		
 		for(int i=0; i<soundFiles.size(); i++) {
 			assert(soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every given file actually exists
 			assert(projectManager.checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the given files isnt of the .wav filetype extension"; //Checks that every given file is a wav file
 		}
 		
+		ArrayList<WavFile> wavFileList = new ArrayList<WavFile>();
 		
-		/*
-		 * Tests:
-		 * test each created wavFile has channels/validBits/sampleRate greater than 0? or is not null?
-		 */
-		return null;
+		for (int i = 0; i < soundFiles.size(); i++) {
+			WavFile newWavFile;
+			
+			try {
+				newWavFile = WavFile.openWavFile(soundFiles.get(i));
+				wavFileList.add(newWavFile);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		assert (soundFiles.size() == wavFileList.size()) : "Error: Length of the wavFile list doesnt equal the length of the given sound files list"; //Checks that the length of the new list of wav files is the same length as the given list of file objects
+		
+		return wavFileList;
 	}
 	
 	/**
