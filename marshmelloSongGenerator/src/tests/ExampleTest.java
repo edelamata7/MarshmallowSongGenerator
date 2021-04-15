@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+//This allows classes in the tests package to access things in our main oackage, "marshmelloSongGenerator2"
 import marshmelloSongGenerator2.*;
 
 public class ExampleTest {
