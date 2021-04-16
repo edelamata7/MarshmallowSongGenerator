@@ -17,7 +17,6 @@ public class ExampleTest {
 		
 		//Get a file from the testFiles folder to test
 		File testFile = new File("./testFiles/testFile1_TurningObjectsIntoPercussion.wav");
-		
 		assert(testFile.exists()) : "Error: Cannot find file"; //Test if the file exists
 	}
 
