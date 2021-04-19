@@ -2,6 +2,9 @@ package marshmelloSongGenerator2;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import wavFile.WavFile;
 
 public class SongGenerator extends CreateSong {
@@ -86,16 +89,63 @@ public class SongGenerator extends CreateSong {
 	 * @return A string of a unique name
 	 */
 	private String createName() {
-		String newName = "";
+		String newName = "project";
+		//Stores the largest number appended to the name of a project file
+		int largestProject;
 		ArrayList<File> projectFiles = projectManager.getProjectFiles();
 		
+		String projectNameRE = ".*(\\d)";
+		Pattern projectNamePattern = Pattern.compile(projectNameRE);
+		
+		
+		if (projectFiles.size() == 0) { //If there are no projects
+			newName += 1;
+		} else if (projectFiles.size() > 1){ //If there is more than 1 project
+			Matcher projectNameMatcher = projectNamePattern.matcher(projectFiles.get(0).getName());
+			if (projectNameMatcher.find()) {
+				largestProject = Integer.parseInt(projectNameMatcher.group(1));
+				
+				for (int i = 1; i < projectFiles.size(); i++) { //Cycle through each projectFile
+					//Get the number of the next project file
+					projectNameMatcher = projectNamePattern.matcher(projectFiles.get(i).getName());
+					//Compare to the current largestProject number
+					if (projectNameMatcher.find() && Integer.parseInt(projectNameMatcher.group(i)) > largestProject) { 
+						//If the current project has a larger number than is in largestProject; set largestProject to the current number
+						largestProject = Integer.parseInt(projectNameMatcher.group(1));
+					}
+				}
+				
+				//Increment the largestProject by 1 to have a new name
+				largestProject++;
+				//append the largestProject number to the new name
+				newName += largestProject;
+			}
+		} else { //If there is 1 project
+			//Need to get the number of the only project; otherwise you risk creating an identical name to the project
+			Matcher projectNameMatcher = projectNamePattern.matcher(projectFiles.get(0).getName());
+			if (projectNameMatcher.find()) {
+				largestProject = Integer.parseInt(projectNameMatcher.group(1));
+				largestProject++;
+				newName += largestProject;
+			}
+		}
+		
+		
+		
+		
+		for (int i = 0; i < projectFiles.size(); i++) {
+			Matcher projectNameMatcher = projectNamePattern.matcher(projectFiles.get(i).getName());
+			if (projectNameMatcher.find()) {
+				String.valueOf(projectNameMatcher.group(1));
+			}
+		}
 		
 		for(int i=0; i < projectFiles.size(); i++) {
 			assert(newName != projectFiles.get(i).getName()) : "Error: Newly generated name is already used in the projectFiles folder"; //Checks to make sure the new name isnt already in the projectFiles folder
 		}
 		
 		
-		return null;
+		return newName;
 	}
 	
 	/**
