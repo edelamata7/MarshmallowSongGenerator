@@ -30,7 +30,20 @@ public class SongGenerator extends CreateSong {
 		
 		
 		//Create the list of wavFiles; needed to compute duration of the song
-		ArrayList<WavFile> wavFiles = compileSoundFiles(soundFiles);//new ArrayList<WavFile>();
+		ArrayList<WavFile> wavFiles = new ArrayList<WavFile>();//compileSoundFiles(soundFiles);
+		
+		//NOTE: DONT FORGET TO REMOVE THIS!!!!!!!
+		try {
+			wavFiles.add(WavFile.openWavFile(soundFiles.get(0)));
+			wavFiles.add(WavFile.openWavFile(soundFiles.get(1)));
+			wavFiles.add(WavFile.openWavFile(soundFiles.get(2)));
+			wavFiles.add(WavFile.openWavFile(soundFiles.get(3)));
+			wavFiles.add(WavFile.openWavFile(soundFiles.get(4)));
+		} catch (Exception e) {
+			
+		}
+		
+		System.out.println(wavFiles.size());
 		
 		assert(wavFiles.size() == soundFiles.size()) : "Error: The list of compiled wavFiles is a different size than the list of given soundFiles"; //Checks to make sure the number of wavFiles and soundFiles are the same
 		
@@ -65,7 +78,7 @@ public class SongGenerator extends CreateSong {
 		}
 		assert (durationTest >= minimumDuration) : "Error: The duration of the generated list of wavFiles is less than the allowed minimum duration of a complete song"; //Check if the duration of the generated list of wavFiles combined's duration is greater than the minimum duration
 		
-		return null;
+		return new ProjectList(generatedWavFiles, generatedSoundFiles);
 	}
 	
 	/**
