@@ -11,8 +11,8 @@ public class SongGenerator extends CreateSong {
 	 */
 	public void generateSong() {
 		ProjectList newProject = createProjectList(projectManager.getSoundFiles());
-		String projectName = createName();
-		createProject(newProject, projectName);
+		//String projectName = createName();
+		//createProject(newProject, projectName);
 	}
 	
 	/**
@@ -29,18 +29,41 @@ public class SongGenerator extends CreateSong {
 		
 		
 		
+		//Create the list of wavFiles; needed to compute duration of the song
+		ArrayList<WavFile> wavFiles = compileSoundFiles(soundFiles);//new ArrayList<WavFile>();
 		
-		ArrayList<WavFile> wavFileList = new ArrayList<WavFile>();
-		int minimumLength = 0;
+		assert(wavFiles.size() == soundFiles.size()) : "Error: The list of compiled wavFiles is a different size than the list of given soundFiles"; //Checks to make sure the number of wavFiles and soundFiles are the same
 		
+		//Song must be at least 3 minutes
+		int minimumDuration = 180;
 		
+		int currentDuration = 0;
 		
+		//Parameters for the random generator
+		int max = soundFiles.size();
+		int min = 0;
+		
+		//Create new lists to store the collection of randomly selected files
+		ArrayList<File> generatedSoundFiles = new ArrayList<File>();
+		ArrayList<WavFile> generatedWavFiles = new ArrayList<WavFile>();
+		
+		while (currentDuration <= minimumDuration) {
+			int randomNum = (int)Math.floor(Math.random()*(max-min)+min);
+			
+			File selectedFile = soundFiles.get(randomNum);
+			WavFile selectedWavFile = wavFiles.get(randomNum);
+			
+			currentDuration += selectedWavFile.getNumFrames()/selectedWavFile.getSampleRate();
+			
+			generatedSoundFiles.add(selectedFile);
+			generatedWavFiles.add(selectedWavFile);
+		}
 		
 		int durationTest = 0;
-		for (int i=0; i < wavFileList.size(); i++) {
-			durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
+		for (int i=0; i < wavFiles.size(); i++) {
+			durationTest += (wavFiles.get(i).getNumFrames()/wavFiles.get(i).getSampleRate());
 		}
-		assert (durationTest >= minimumLength) : "Error: The duration of the generated list of wavFiles is less than the allowed minimum duration of a complete song"; //Check if the duration of the generated list of wavFiles combined's duration is greater than the minimum duration
+		assert (durationTest >= minimumDuration) : "Error: The duration of the generated list of wavFiles is less than the allowed minimum duration of a complete song"; //Check if the duration of the generated list of wavFiles combined's duration is greater than the minimum duration
 		
 		return null;
 	}
@@ -60,6 +83,13 @@ public class SongGenerator extends CreateSong {
 		
 		
 		return null;
+	}
+	
+	/**
+	 * Exists for testing the createProjectList method; do not use otherwise
+	 */
+	public ProjectList createProjectListTest(ArrayList<File> soundFiles) {
+		return createProjectList(soundFiles);
 	}
 
 }
