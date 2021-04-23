@@ -49,12 +49,13 @@ public class StorageManager {
 		
 		
 		
-		
 		for(int i=0; i<soundFiles.size(); i++) {
+			soundFiles.add(null);
 			assert(soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every retrieved file actually exists
 			assert(checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the selected files isnt of the .wav filetype extension"; //Checks that every retrieved file is a wav file
 		}
-		return null;
+		
+		return soundFiles;
 	}
 	
 	/**
@@ -76,7 +77,7 @@ public class StorageManager {
 		 */
 		
 		assert(soundFile.getName() == name) : "Error: Retrieved file doesnt match the requested file"; //Checks that the retrived file actually matches the requested file
-		return null;
+		return soundFile;
 	}
 	
 	/**
@@ -96,7 +97,7 @@ public class StorageManager {
 			assert(projectFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every retrieved file actually exists
 			assert(checkFileType(projectFiles.get(i), ".txt")) : "Error: One or more of the selected files isnt of the .txt filetype extension"; //Checks that every retrieved file is a txt file
 		}
-		return null;
+		return projectFiles;
 	}
 	
 	/**
@@ -117,7 +118,7 @@ public class StorageManager {
 		
 		
 		assert(projectFile.getName() == name) : "Error: Retrieved file doesnt match the requested file"; //Checks that the retrived file actually matches the requested file
-		return null;
+		return projectFile;
 	}
 	
 	/**
