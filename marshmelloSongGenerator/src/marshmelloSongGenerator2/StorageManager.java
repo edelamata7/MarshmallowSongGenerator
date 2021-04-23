@@ -46,15 +46,13 @@ public class StorageManager {
 	public ArrayList<File> getSoundFiles() {
 		
 		ArrayList<File> soundFiles = new ArrayList<File>();
-		
-		
+				
 		
 		for(int i=0; i<soundFiles.size(); i++) {
 			soundFiles.add(null);
 			assert(soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; //Checks that every retrieved file actually exists
 			assert(checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the selected files isnt of the .wav filetype extension"; //Checks that every retrieved file is a wav file
 		}
-		
 		return soundFiles;
 	}
 	
