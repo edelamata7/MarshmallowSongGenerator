@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -15,58 +17,87 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 
 public class SongEditorInterface implements ActionListener {
+
+	ArrayList<File> projectFiles;
+	ArrayList<File> soundFiles;
+	ProjectManager projectManager;
+	SongEditor songEditor;
 	
-	public void test2() {
+	boolean exit = false;
+
+	public SongEditorInterface(File project) {
+		// TEMP
+		ArrayList<File> testFiles = new ArrayList<File>();
+		testFiles.add(new File("./testFiles/testFile1_TurningObjectsIntoPercussion.wav"));
+		testFiles.add(new File("./testFiles/testFile2_BassLoopsWithDrums.wav"));
+		testFiles.add(new File("./testFiles/testFile3_BassLoopsNoDrums.wav"));
+		testFiles.add(new File("./testFiles/testFile4_DiscoFunkLoopsNoDrums.wav"));
+		testFiles.add(new File("./testFiles/testFile5_DiscoFunkLoopsWithDrums.wav"));
+		ArrayList<File> testFiles2 = new ArrayList<File>();
+		testFiles2.add(new File("./testFiles/testFile1_TurningObjectsIntoPercussion.wav"));
+		testFiles2.add(new File("./testFiles/testFile2_BassLoopsWithDrums.wav"));
+		testFiles2.add(new File("./testFiles/testFile3_BassLoopsNoDrums.wav"));
+		testFiles2.add(new File("./testFiles/testFile4_DiscoFunkLoopsNoDrums.wav"));
+		testFiles2.add(new File("./testFiles/testFile5_DiscoFunkLoopsWithDrums.wav"));
+		projectFiles = testFiles;
+		soundFiles = testFiles2;
+
+		// Gets a list of the available sample files and those used in the complete
+		// given project file
+		// projectManager = new ProjectManager();
+		// projectFiles = projectManager.openProjectFile(project);
+		// soundFiles = projectManager.getSoundFiles();
+
+		// TODO Pass project files into a new SongEditor object
+		// songEditor = new SongEditor();
+		
+		makeInterface();
+	}
+	
+	public void makeInterface() {
+		// Create the interface
 		JFrame frame = new JFrame();
 		frame.setSize(1000, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		//master panel everything else is attached to
+		//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+		// master panel everything else is attached to
 		JPanel mainPanel = new JPanel();
 		mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-		
-		//used to have the available files/song files panels right next to each other
+
+		// used to have the available files/song files panels right next to each other
 		JPanel fileDisplay = new JPanel();
 		fileDisplay.setLayout(new BoxLayout(fileDisplay, BoxLayout.X_AXIS));
-		
-		//Create the panels that actually have components like labels
-		//These need to be initialized with a GridLayout so the components added to them will be laid out properly
-		//How to use GridLayout: https://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html
-		JPanel availableFiles = new JPanel(new GridLayout(testFiles.size()+1, 2));
-		JPanel songFiles = new JPanel(new GridLayout(testFiles.size()+1, 2));
+
+		// Create the panels that actually have components like labels
+		// These need to be initialized with a GridLayout so the components added to them will be laid out properly
+		// How to use GridLayout:
+		// https://docs.oracle.com/javase/7/docs/api/java/awt/GridLayout.html
+		JPanel availableFiles = new JPanel(new GridLayout(soundFiles.size() + 1, 2));
+		JPanel songFiles = new JPanel(new GridLayout(projectFiles.size() + 1, 2));
 		JPanel input = new JPanel(new GridLayout(4, 1));
-		
-		//Ignore this; just to help show how the panels work
-		Border red = BorderFactory.createLineBorder(Color.red);
-		Border blue = BorderFactory.createLineBorder(Color.blue);
-		Border green = BorderFactory.createLineBorder(Color.green);
-		Border pink = BorderFactory.createLineBorder(Color.pink);
-		mainPanel.setBorder(red);
-		songFiles.setBorder(blue);
-		availableFiles.setBorder(green);
-		input.setBorder(pink);
-		
-		//Add files to the availableFiles (shows all the available sample files)
+
+		// Displays the contents of the soundFiles list in the availableFiles panel (shows all the available sample files)
 		availableFiles.add(new JLabel("ID"));
-		availableFiles.add(new JLabel("File in Song"));
-		for (int i = 0; i < testFiles.size(); i++) {
-			//Song ID (used for the input textbox; we cant just use the name of the file we need its location in the arrayList)
-			availableFiles.add(new JLabel(""+i));
-			//Name of the file
-			availableFiles.add(new JLabel(testFiles.get(i).getName()));
+		availableFiles.add(new JLabel("Files Available"));
+		for (int i = 0; i < soundFiles.size(); i++) {
+			// Song ID (used for the input textbox; we cant just use the name of the file we need its location in the arrayList)
+			availableFiles.add(new JLabel("" + i));
+			// Name of the file
+			availableFiles.add(new JLabel(soundFiles.get(i).getName()));
 		}
 		
-		//Adds files to the songFiles panel (shows everything thats part of the song)
+		// Displays the contents of the projectFiles list in the songFiles panel (shows everything thats part of the song)
 		songFiles.add(new JLabel("ID"));
-		songFiles.add(new JLabel("File Available"));
-		for (int i = 0; i < testFiles.size(); i++) {
-			//Song ID
-			songFiles.add(new JLabel(""+i));
-			//Name of the song
-			songFiles.add(new JLabel(testFiles.get(i).getName()));
+		songFiles.add(new JLabel("File in Song"));
+		for (int i = 0; i < projectFiles.size(); i++) {
+			// Song ID
+			songFiles.add(new JLabel("" + i));
+			// Name of the song
+			songFiles.add(new JLabel(projectFiles.get(i).getName()));
 		}
-		
-		//Sample idea for how to have the add/delete/modify/finish buttons/textboxes/whatever
+
+		// Component for adding a new file to the song
 		JTextField addField = new JTextField("What do you want to add");
 		input.add(addField);
 		JTextField addWhere = new JTextField("Add where");
@@ -76,12 +107,26 @@ public class SongEditorInterface implements ActionListener {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(addField.getText());
+				// TODO
+				String addFieldText = addField.getText();
+				String addWhereText = addWhere.getText();
+				// Make sure the given values are numbers
+				if (addFieldText.matches("\\d*") && addWhereText.matches("\\d*")) {
+					// Convert given strings to ints
+					int addFieldInt = Integer.parseInt(addFieldText);
+					int addWhereInt = Integer.parseInt(addWhereText);
+					// Check that the given ID is within the arrays
+					if (addFieldInt < soundFiles.size() && addWhereInt < projectFiles.size()) {
+						//songEditor.addFile(addFieldInt, addWhereInt);
+					}
+				}
+				
+				frame.dispose();
+				makeInterface();
 			}
 		});
-		//ADD ACTION LISTENER
-		
-		
+
+		// Component for deleting a file from the song
 		input.add(new JLabel("What do you want to delete"));
 		JTextField deleteField = new JTextField("Delete what");
 		input.add(deleteField);
@@ -90,10 +135,24 @@ public class SongEditorInterface implements ActionListener {
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("delete");
+				// TODO
+				String deleteFieldText = deleteField.getText();
+				// Make sure the given value is a number
+				if (deleteFieldText.matches("\\d*")) {
+					// Convert given string to an int
+					int deleteFieldInt = Integer.parseInt(deleteFieldText);
+					// Check that the given ID is within the arrays
+					if (deleteFieldInt < projectFiles.size()) {
+						//songEditor.deleteFile(deleteFieldInt);
+					}
+				}
+				
+				frame.dispose();
+				makeInterface();
 			}
-		});		
-	
+		});
+
+		// Component for modifying a file in the song
 		JTextField modifyWhat = new JTextField("What do you want to modify");
 		input.add(modifyWhat);
 		JTextField modifyWhere = new JTextField("Where");
@@ -103,34 +162,52 @@ public class SongEditorInterface implements ActionListener {
 		modifyButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("modify");
+				// TODO
+				String modifyWhatText = addField.getText();
+				String modifyWhereText = addWhere.getText();
+				// Make sure the given values are numbers
+				if (modifyWhatText.matches("\\d*") && modifyWhereText.matches("\\d*")) {
+					// Convert given strings to ints
+					int modifyWhatInt = Integer.parseInt(modifyWhatText);
+					int modifyWhereInt = Integer.parseInt(modifyWhereText);
+					// Check that the given ID is within the arrays
+					if (modifyWhatInt < soundFiles.size() && modifyWhereInt < projectFiles.size()) {
+						//songEditor.modify(modifyWhatInt, modifyWhereInt);
+					}
+				}
+				
+				frame.dispose();
+				makeInterface();
 			}
-		});	
-		
+		});
+
+		// Component to finish editing
 		input.add(new JLabel("Hit button to Generate New Song"));
 		JButton finishButton = new JButton("Finish Song");
 		input.add(finishButton);
 		finishButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Generating Song");
+				// TODO
+				songEditor.finishProject();
+				new Interface();
+				frame.dispose();
 			}
-		});	
+		});
 		
-		//Add the panels together so they are laid out correctly
+		// Add the panels together so they are laid out correctly
 		fileDisplay.add(availableFiles);
 		fileDisplay.add(songFiles);
 		mainPanel.add(fileDisplay);
 		mainPanel.add(input);
-		
+
 		frame.add(mainPanel);
 		frame.setVisible(true);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		System.out.println(e.getActionCommand());
 	}
 
 }
