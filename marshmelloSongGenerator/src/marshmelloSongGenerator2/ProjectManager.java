@@ -6,8 +6,8 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+//import java.util.regex.Matcher;
+//import java.util.regex.Pattern;
 import java.util.Scanner;
 
 public class ProjectManager extends StorageManager {
@@ -34,7 +34,7 @@ public class ProjectManager extends StorageManager {
 			project.createNewFile();
 			FileWriter fileWriter = new FileWriter(project, false);
 			BufferedWriter writer = new BufferedWriter(fileWriter);
-			writer.write("MARSHMELLOW SONG GENERATOR PROJECT");
+			writer.write("MARSHMELLOW SONG GENERATOR PROJECT"); //This is used to show that this txt file is a project file for this program
 			writer.newLine();
 			
 			for (File file : projectData) {
