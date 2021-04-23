@@ -12,7 +12,7 @@ public class StorageManager {
 	/**
 	 * This stores the filepath to where the program's files are stored
 	 */
-	protected String storageLocation;
+	protected String storageLocation = ".";
 	
 	/**
 	 * Tries to locate the program's storage folders.
