@@ -10,8 +10,13 @@ import marshmelloSongGenerator2.*;
 
 public class ProjectManagerTests {
 	
-	
 	public static void main(String[] args) {
+		ProjectManagerTests driver = new ProjectManagerTests();
+		driver.saveProjectTest();
+		driver.openProjectFileTest();
+	}
+	
+	public void saveProjectTest() {
 		ArrayList<File> soundFiles = new ArrayList<File>();
 		
 		//Get files from the testFiles folder:
@@ -48,7 +53,21 @@ public class ProjectManagerTests {
 		projectManager.saveProject(soundFiles, "test1");
 		
 		System.out.println("Test Complete");
-		
 	}
 
+	public void openProjectFileTest() {
+		
+		File testFile = new File("C:\\Users\\bacca\\git\\MarshmallowSongGenerator\\marshmelloSongGenerator\\testFiles\\projectFiles\\test1.txt");
+		
+		
+		ProjectManager projectManager = new ProjectManager();
+		ArrayList<File> results = projectManager.openProjectFile(testFile);
+		
+		for (File file : results) {
+			System.out.println(file.getName() + " | Exists = "+file.exists());
+		}
+		
+		System.out.println("Test Complete");
+	}
+	
 }

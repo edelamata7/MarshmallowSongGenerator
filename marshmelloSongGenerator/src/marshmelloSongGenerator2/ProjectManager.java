@@ -75,37 +75,31 @@ public class ProjectManager extends StorageManager {
 	 * @return Returns an ArrayList of type File
 	 */
 	public ArrayList<File> openProjectFile(File project) { //Add throws FileNotFoundException?
-		
 		assert (checkFileType(project, ".txt")) : "Error: Given file isnt a text file"; //Check that the given file is a text file
-		
-		
-		
-		
-		
-		
-		
-		
-		Scanner projectReader;
+		ArrayList<File> readFiles = new ArrayList<File>();
 		try {
-			projectReader = new Scanner(project);
+			Scanner projectReader = new Scanner(project);
 			String data = projectReader.nextLine(); //Read first line (the indicator line)
-			assert (data == "MARSHMELLOW SONG GENERATOR PROJECT") : "Error: Project file indicator wasnt found"; //Checks that the indicator is included in the file to ensure the given text file is a project file
-			
-			while (projectReader.hasNextLine()) {
-				data = projectReader.nextLine(); //Read each line after the indicator line
-				assert (getSoundFile(data) != null) : "Error: File recorded in project file cant be found in the sound files folder"; //Checks that each recorded soundfile in the project text file is actually in the sound files folder
-				
+			assert (data.matches("MARSHMELLOW SONG GENERATOR PROJECT")) : "Error: Project file indicator wasnt found"; //Checks that the indicator is included in the file to ensure the given text file is a project file
+			if (data.matches("MARSHMELLOW SONG GENERATOR PROJECT")) {
+				while (projectReader.hasNextLine()) {
+					data = projectReader.nextLine(); //Read each line after the indicator line
+					assert (getSoundFile(data) != null) : "Error: File recorded in project file cant be found in the sound files folder"; //Checks that each recorded soundfile in the project text file is actually in the sound files folder
+					//readFiles.add(getSoundFile(data));
+					readFiles.add(new File("./testFiles/"+data)); //TEMPORARY SOLUTION NEEDS TO BE REPLACED
+				}
+			} else {
+				//If the given file doesnt have the project file indecator then it isnt a project file and cannot be used with this method
+				//Throw an exception? Or return null? Or something else? will handle later
+				//throw new Exception();
 			}
+			projectReader.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		
-		/*
-		 * Tests:
-		 * Test that the files listed/read from the project file have a combined duration equal to the corresponding project's wavFile's duration? TBD
-		 */
 		
-		return null;
+		return readFiles;
 	}
 
 }
