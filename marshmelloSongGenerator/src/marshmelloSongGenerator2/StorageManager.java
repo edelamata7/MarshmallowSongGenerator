@@ -12,7 +12,7 @@ public class StorageManager {
 	/**
 	 * This stores the filepath to where the program's files are stored
 	 */
-	protected String storageLocation;
+	protected String storageLocation = "";
 	
 	/**
 	 * Tries to locate the program's storage folders.
@@ -29,6 +29,7 @@ public class StorageManager {
 		 */
 		
 		File masterFolder = new File(storageLocation); //Create a new file object using the storageLocation path
+	
 		
 		assert (storageLocation != null) : "Error: StorageLocation cannot be null"; //Checks that it actually finds/creates a storage location
 		assert(masterFolder.exists()) : "Error: master storage folder doesn't exist"; //Checks that the storageLocation path actually loads a file directory/folder
