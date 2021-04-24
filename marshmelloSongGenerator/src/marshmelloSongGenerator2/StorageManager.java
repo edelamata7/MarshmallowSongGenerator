@@ -15,6 +15,7 @@ public class StorageManager {
 	 */
 	protected String storageLocation = "";
 	//This is a test comment
+	//Here is another test comment
 
 	/**
 	 * Tries to locate the program's storage folders. If one or more of the storage
