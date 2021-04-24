@@ -9,7 +9,7 @@ public class StorageManagerTest {
 	public static void main(String[] args) throws FileNotFoundException {
 		
 		StorageManager sm = new StorageManager();
-		
+				
 		sm.getSoundFile("Music.wav");
 		sm.getSoundFile("Music.exe");
 		sm.getSoundFile("Music.txt");

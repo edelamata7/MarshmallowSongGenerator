@@ -17,7 +17,7 @@ public class StorageManager {
 	/**
 	 * Tries to locate the program's storage folders. If one or more of the storage
 	 * folders are missing then the program should inform the user and create new
-	 * ones. Once the storage folders have been located/created, stores the filepath
+	 * ones. Once the storage folders have been located/created, stores the file path
 	 * in storageLocation.
 	 */
 	public StorageManager() {
