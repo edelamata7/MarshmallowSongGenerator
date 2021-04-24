@@ -9,7 +9,7 @@ import java.util.regex.*;
 import wavFile.WavFile;
 
 public class StorageManager {
-
+	
 	/**
 	 * This stores the filepath to where the program's files are stored
 	 */
