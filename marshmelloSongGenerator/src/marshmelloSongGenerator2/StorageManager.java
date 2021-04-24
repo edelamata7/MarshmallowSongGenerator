@@ -14,6 +14,7 @@ public class StorageManager {
 	 * This stores the filepath to where the program's files are stored
 	 */
 	protected String storageLocation = "";
+	//This is a test comment
 
 	/**
 	 * Tries to locate the program's storage folders. If one or more of the storage
