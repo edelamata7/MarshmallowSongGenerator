@@ -1,0 +1,6 @@
+MARSHMELLOW SONG GENERATOR PROJECT
+testFile1_TurningObjectsIntoPercussion.wav
+testFile2_BassLoopsWithDrums.wav
+testFile3_BassLoopsNoDrums.wav
+testFile4_DiscoFunkLoopsNoDrums.wav
+testFile5_DiscoFunkLoopsWithDrums.wav
