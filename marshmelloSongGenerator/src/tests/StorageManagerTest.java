@@ -1,6 +1,8 @@
 package tests;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import marshmelloSongGenerator2.*;
 
@@ -8,26 +10,77 @@ public class StorageManagerTest {
 
 	public static void main(String[] args) throws FileNotFoundException {
 		
-		StorageManager sm = new StorageManager();
+//		System.out.println(System.getProperty("user.home"));
+//		
+//		File tmp = new File(System.getProperty("user.home")+"\\AppData\\Roaming");
+//		File tmp2 = new File(System.getProperty("user.home")+"\\AppData\\Roaming\\MarshmelloSongGenerator");
+//		
+//		System.out.println(tmp2.exists());
+//		tmp2.mkdir();
+//		System.out.println(tmp2.exists());
 		
-		sm.getSoundFile("Music.wav");
-		sm.getSoundFile("Music.exe");
-		sm.getSoundFile("Music.txt");
+		//new StorageManagerTest().testGetSoundFiles();
+		//System.out.println();
+		//new StorageManagerTest().testGetProjectFiles();
+		//System.out.println();
+		new StorageManagerTest().testGetSoundFile();
+		System.out.println();
+		new StorageManagerTest().testGetProjectFile();
 		
-		sm.getSoundFiles();
-				
-		sm.getProjectFile("File.wav");
-		sm.getProjectFile("File.exe");
-		sm.getProjectFile("File.txt");
-		
-		sm.getProjectFiles();
-
-		sm.checkFileType(null, ".wav");
-		sm.checkFileType(null, ".exe");
-		sm.checkFileType(null, ".txt");
-		sm.checkFileType(null, null);
-		
-		sm.getStorageLocation();
+		//C:\Users\bacca\AppData\Roaming
 	}
+	
+	
+	public void testGetSoundFiles() {
+		StorageManager testDriver = new StorageManager();
+		
+		ArrayList<File> soundFiles = testDriver.getSoundFiles();
+		
+		for (File item : soundFiles) {
+			System.out.println(item.getName());
+			System.out.println(item.exists());
+		}
+	}
+	
+	public void testGetProjectFiles() {
+		StorageManager testDriver = new StorageManager();
+		
+		ArrayList<File> projectFiles = testDriver.getProjectFiles();
+		
+		for (File item : projectFiles) {
+			System.out.println(item.getName());
+			System.out.println(item.exists());
+		}
+	}
+	
+	public void testGetSoundFile() {
+		StorageManager testDriver = new StorageManager();
+		
+		File testFile = testDriver.getSoundFile("testFile1_TurningObjectsIntoPercussion.wav");
+		System.out.println(testFile.getName());
+		System.out.println(testFile.exists());
+		
+		testFile = testDriver.getSoundFile("testFile3_BassLoopsNoDrums.wav");
+		System.out.println(testFile.getName());
+		System.out.println(testFile.exists());
+		
+		
+		
+	}
+	
+	public void testGetProjectFile() {
+		StorageManager testDriver = new StorageManager();
+		
+		File testFile = testDriver.getProjectFile("test1.txt");
+		System.out.println(testFile.getName());
+		System.out.println(testFile.exists());
+		
+		testFile = testDriver.getProjectFile("test2.txt");
+		System.out.println(testFile.getName());
+		System.out.println(testFile.exists());
+	}
+	
+	
+	
 
 }

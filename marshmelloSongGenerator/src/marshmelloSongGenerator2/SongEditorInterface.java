@@ -1,20 +1,20 @@
 package marshmelloSongGenerator2;
 
-import java.awt.Color;
+//import static javax.swing.JOptionPane.showMessageDialog;
+
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.Border;
 
 public class SongEditorInterface implements ActionListener {
 
@@ -26,30 +26,12 @@ public class SongEditorInterface implements ActionListener {
 	boolean exit = false;
 
 	public SongEditorInterface(File project) {
-		// TEMP
-		ArrayList<File> testFiles = new ArrayList<File>();
-		testFiles.add(new File("./testFiles/testFile1_TurningObjectsIntoPercussion.wav"));
-		testFiles.add(new File("./testFiles/testFile2_BassLoopsWithDrums.wav"));
-		testFiles.add(new File("./testFiles/testFile3_BassLoopsNoDrums.wav"));
-		testFiles.add(new File("./testFiles/testFile4_DiscoFunkLoopsNoDrums.wav"));
-		testFiles.add(new File("./testFiles/testFile5_DiscoFunkLoopsWithDrums.wav"));
-		ArrayList<File> testFiles2 = new ArrayList<File>();
-		testFiles2.add(new File("./testFiles/testFile1_TurningObjectsIntoPercussion.wav"));
-		testFiles2.add(new File("./testFiles/testFile2_BassLoopsWithDrums.wav"));
-		testFiles2.add(new File("./testFiles/testFile3_BassLoopsNoDrums.wav"));
-		testFiles2.add(new File("./testFiles/testFile4_DiscoFunkLoopsNoDrums.wav"));
-		testFiles2.add(new File("./testFiles/testFile5_DiscoFunkLoopsWithDrums.wav"));
-		projectFiles = testFiles;
-		soundFiles = testFiles2;
-
 		// Gets a list of the available sample files and those used in the complete
 		// given project file
-		// projectManager = new ProjectManager();
-		// projectFiles = projectManager.openProjectFile(project);
-		// soundFiles = projectManager.getSoundFiles();
-
-		// TODO Pass project files into a new SongEditor object
-		// songEditor = new SongEditor();
+		projectManager = new ProjectManager();
+		projectFiles = projectManager.openProjectFile(project);
+		soundFiles = projectManager.getSoundFiles();
+		songEditor = new SongEditor(projectFiles, project.getName());
 		
 		makeInterface();
 	}
@@ -107,7 +89,6 @@ public class SongEditorInterface implements ActionListener {
 		addButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
 				String addFieldText = addField.getText();
 				String addWhereText = addWhere.getText();
 				// Make sure the given values are numbers
@@ -117,7 +98,7 @@ public class SongEditorInterface implements ActionListener {
 					int addWhereInt = Integer.parseInt(addWhereText);
 					// Check that the given ID is within the arrays
 					if (addFieldInt < soundFiles.size() && addWhereInt < projectFiles.size()) {
-						//songEditor.addFile(addFieldInt, addWhereInt);
+						songEditor.addFile(addFieldInt, addWhereInt);
 					}
 				}
 				
@@ -135,7 +116,6 @@ public class SongEditorInterface implements ActionListener {
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
 				String deleteFieldText = deleteField.getText();
 				// Make sure the given value is a number
 				if (deleteFieldText.matches("\\d*")) {
@@ -143,7 +123,7 @@ public class SongEditorInterface implements ActionListener {
 					int deleteFieldInt = Integer.parseInt(deleteFieldText);
 					// Check that the given ID is within the arrays
 					if (deleteFieldInt < projectFiles.size()) {
-						//songEditor.deleteFile(deleteFieldInt);
+						songEditor.deleteFile(deleteFieldInt);
 					}
 				}
 				
@@ -155,16 +135,15 @@ public class SongEditorInterface implements ActionListener {
 		// Component for modifying a file in the song
 		JTextField modifyWhat = new JTextField("What do you want to modify");
 		input.add(modifyWhat);
-		JTextField modifyWhere = new JTextField("Where");
+		JTextField modifyWhere = new JTextField("Replace with what");
 		input.add(modifyWhere);
 		JButton modifyButton = new JButton("Click to Modify");
 		input.add(modifyButton);
 		modifyButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				String modifyWhatText = addField.getText();
-				String modifyWhereText = addWhere.getText();
+				String modifyWhatText = modifyWhat.getText();
+				String modifyWhereText = modifyWhere.getText();
 				// Make sure the given values are numbers
 				if (modifyWhatText.matches("\\d*") && modifyWhereText.matches("\\d*")) {
 					// Convert given strings to ints
@@ -172,7 +151,7 @@ public class SongEditorInterface implements ActionListener {
 					int modifyWhereInt = Integer.parseInt(modifyWhereText);
 					// Check that the given ID is within the arrays
 					if (modifyWhatInt < soundFiles.size() && modifyWhereInt < projectFiles.size()) {
-						//songEditor.modify(modifyWhatInt, modifyWhereInt);
+						songEditor.modify(modifyWhereInt, modifyWhatInt);
 					}
 				}
 				
@@ -188,10 +167,16 @@ public class SongEditorInterface implements ActionListener {
 		finishButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO
-				songEditor.finishProject();
-				new Interface();
+				try {
+					songEditor.finishProject();
+				} catch (Exception e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frame, "Error: Couldn't edit project", "Error", JOptionPane.ERROR_MESSAGE);
+					frame.dispose();
+					makeInterface();
+				}
 				frame.dispose();
+				new Interface();
 			}
 		});
 		

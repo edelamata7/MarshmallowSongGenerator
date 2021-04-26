@@ -13,7 +13,7 @@ public class SongEditorInterfaceTests {
 	}
 	
 	public void test1() {
-		SongEditorInterface driver = new SongEditorInterface(new File(""));
+		SongEditorInterface driver = new SongEditorInterface(new File("C:\\Users\\bacca\\Documents\\MarshmelloSongGenerator\\projectFiles\\test1.txt"));
 	}
 
 }

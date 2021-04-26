@@ -25,9 +25,10 @@ public class SongEditor extends CreateSong {
 	/**
 	 * Needs to set the list of projectSoundFiles and the list of availableSoundFiles
 	 */
-	public SongEditor() {
-		
-		
+	public SongEditor(ArrayList<File> projectFiles, String projectName) {
+		this.projectName = projectName;
+		availableSoundFiles = projectManager.getSoundFiles();
+		projectSoundFiles = projectFiles;
 		
 		
 		assert (new File(projectManager.getStorageLocation()+"\\projectFiles\\"+projectName+".txt").exists()) : "Error: No file with the given filename exists in the projectFiles folder"; //Checks that a file can be found in the project files folder that matches the name of the file being edited
@@ -47,7 +48,7 @@ public class SongEditor extends CreateSong {
 	/**
 	 * Creates a new ProjectList using the createProjectList method and passes it and the projects filename to the CreateSong class to update the wavFile and project file
 	 */
-	public void finishProject() {
+	public void finishProject() throws Exception {
 		createProject(createProjectList(projectSoundFiles), projectName);
 	}
 
@@ -59,14 +60,15 @@ public class SongEditor extends CreateSong {
 	 */
 	@Override
 	protected ProjectList createProjectList(ArrayList<File> soundFiles) {
-		return null;
+		ArrayList<WavFile> wavFiles = compileSoundFiles(soundFiles);
+		return new ProjectList(wavFiles, soundFiles);
 	}
 	
 	/**
 	 * Removes a specified file from the projectSoundFiles arrayList
 	 * @param name - name of the file to remove from the projectSoundFiles list
 	 */
-	public void deleteFile(String name) {
+	public void deleteFile(int location) {
 		/*
 		 * test:
 		 * ensure that the deleted file is removed from the projectSoundFiles arrayList (how if file can appear multiple times? using specific test case?)
@@ -74,10 +76,7 @@ public class SongEditor extends CreateSong {
 		
 		int projectSoundFiles_initialSize = projectSoundFiles.size();
 		
-		
-		
-		
-		
+		projectSoundFiles.remove(location);
 		
 		assert(projectSoundFiles.size() == projectSoundFiles_initialSize-1) : "Error: projectSoundFiles size should have decreased by 1"; //Check that the size of project sound files has decreased by 1 now that a file has been removed from it
 		
@@ -88,7 +87,7 @@ public class SongEditor extends CreateSong {
 	 * @param newFile - the file from the availableSoundFiles list to add to the projectSoundFiles list
 	 * @param locationFile - file in the projectSoundFiles list where the new file should be added
 	 */
-	public void addFile(String newFile, String locationFile) { //locationFile may become an int based on future implementation
+	public void addFile(int newFile, int locationFile) { //locationFile may become an int based on future implementation
 		
 		/*
 		 * test:
@@ -98,10 +97,7 @@ public class SongEditor extends CreateSong {
 		
 		int projectSoundFiles_initialSize = projectSoundFiles.size();
 		
-		
-		
-		
-		
+		projectSoundFiles.add(locationFile, availableSoundFiles.get(newFile));
 		
 		assert(projectSoundFiles.size() == projectSoundFiles_initialSize+1) : "Error: projectSoundFiles size should have increased by 1"; //Check that the size of project sound files has increased by 1 now that a file has been added to it
 	}
@@ -111,13 +107,11 @@ public class SongEditor extends CreateSong {
 	 * @param newFile - file to replace the oldFile
 	 * @param oldFile - file in the projectSoundFiles list to be replaced
 	 */
-	public void modify(String newFile, int oldFile) { //oldFile may become an int based on future implementation
+	public void modify(int newFile, int oldFile) { //oldFile may become an int based on future implementation
 		int projectSoundFiles_initialSize = projectSoundFiles.size();
 		String oldFile_name = projectSoundFiles.get(oldFile).getName();
 		
-		
-		
-		
+		projectSoundFiles.set(oldFile, availableSoundFiles.get(newFile));
 		
 		assert(projectSoundFiles.size() == projectSoundFiles_initialSize) : "Error: projectSoundFiles should have remained the same size"; //Check that the size of projectSoundFiles remains the same
 		assert(projectSoundFiles.get(oldFile).getName() != oldFile_name) : "Error: the old file in projectSoundFiles should not equal the newFile"; //Checks that the oldFile has actually changed and isnt the same file

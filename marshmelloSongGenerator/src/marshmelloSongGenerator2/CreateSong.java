@@ -15,13 +15,8 @@ public abstract class CreateSong {
 	protected ProjectManager projectManager;
 	
 	public CreateSong() {
-		try {
-			projectManager = new ProjectManager();
-			assert(this.projectManager != null) : "ProjectManager cannot be null"; //Ensure that it creates a project manager
-		} catch (Exception e) {
-			
-		}
-		
+		projectManager = new ProjectManager();
+		assert(this.projectManager != null) : "ProjectManager cannot be null"; //Ensure that it creates a project manager
 	}
 	
 	/**
@@ -29,12 +24,9 @@ public abstract class CreateSong {
 	 * @param projectList - contains the list of files/wavFiles that are needed to create the sound and project files
 	 * @param filename - what to save the new project as
 	 */
-	public void createProject(ProjectList projectList, String filename) {
-		try {
-			createCompleteWavFile(projectList.getWavFiles(), filename);
-		} catch (Exception e) {
-			
-		}
+	public void createProject(ProjectList projectList, String filename) throws Exception {
+		createCompleteWavFile(projectList.getWavFiles(), filename);
+		createProjectFile(projectList.getFiles(), filename);
 	}
 	
 	/**
@@ -44,21 +36,26 @@ public abstract class CreateSong {
 	 */
 	private void createCompleteWavFile(ArrayList<WavFile> wavFileList, String filename) throws Exception {
 		
+		//For a test later
+		int durationTest = 0;
+		for (int i=0; i < wavFileList.size(); i++) {
+			durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
+		}
+		
 		//Every given file needs to have the same sample rate; if they dont the file cant compile correctly
 		if (wavFileList.get(0).getSampleRate() == wavFileList.get(1).getSampleRate()) {
 			for (int i=1; i < wavFileList.size(); i++) {
 				if (wavFileList.get(i).getSampleRate() != wavFileList.get(i-1).getSampleRate()) {
-					throw new Exception();
+					//throw new Exception();
 				}
 			}
 		}
 		
-		File newFile = new File("./testFiles/"+filename+".wav"); //created separately from the newWavFile to allow testing it. This technically isnt necessary
+		File newFile = new File(projectManager.getStorageLocation()+"\\projectFiles\\"+filename+".wav");//created separately from the newWavFile to allow testing it. This technically isnt necessary
 		assert (newFile.getName().equals(filename+".wav")) : "Error: the new wavFile doesn't have the correct filename"; //check that the new wavfile has the correct name
 		
 		
 		try {
-			//newWavFile(new File("filepath/filename.wav"), numChannels, numFrames, validBits, sampleRate);
 			/*
 			 * Note: Have to ensure each given file:
 			 * 	Has the same number of channels? (easy to handle
@@ -70,7 +67,7 @@ public abstract class CreateSong {
 			
 			//Set the parameters for the new wav file
 			int numChannels = 2;
-			long numFrames = wavFileList.get(1).getNumFrames();
+			long numFrames = wavFileList.get(0).getNumFrames();
 			for (int i=1; i<wavFileList.size(); i++) { //Sets the # of frames in the new file by added in the #frames of all given files
 				numFrames += wavFileList.get(i).getNumFrames();
 			}
@@ -127,10 +124,7 @@ public abstract class CreateSong {
 				}
 			}
 			
-			int durationTest = 0;
-			for (int i=0; i < wavFileList.size(); i++) {
-				durationTest += (wavFileList.get(i).getNumFrames()/wavFileList.get(i).getSampleRate());
-			}
+			
 			assert (durationTest == completeWavFile.getNumFrames()/completeWavFile.getSampleRate()) : "Error: The duration of the new wavFile doesn't match the duration of the combined given soundFiles"; //Check if the duration of the complete wav file equals the duration of all the given wavFiles
 			
 			completeWavFile.close();

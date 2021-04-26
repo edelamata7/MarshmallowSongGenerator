@@ -13,8 +13,12 @@ public class StorageManager {
 	/**
 	 * This stores the filepath to where the program's files are stored
 	 */
-	protected String storageLocation = "";
-  
+	protected String masterFolderFilepath = System.getProperty("user.home")+"\\Documents\\MarshmelloSongGenerator";
+	private String sampleFolderFilepath = masterFolderFilepath+"\\sampleFiles";
+	private String projectFolderFilepath = masterFolderFilepath+"\\projectFiles";
+	private File sampleFolder;
+	private File projectFolder;
+	
 	/**
 	 * Tries to locate the program's storage folders. If one or more of the storage
 	 * folders are missing then the program should inform the user and create new
@@ -22,24 +26,37 @@ public class StorageManager {
 	 * in storageLocation.
 	 */
 	public StorageManager() {
-
+		
 		/*
 		 * Tests: Test Case for when there is no storage location: a new one is made
 		 * appropriately Test Case for when there is a storage location: it is found
 		 * appropriately Tests the the master storage folder has a soundFiles and
 		 * projectFiles folder in it: if 1 or more is missing create the missing folders
 		 */
-
-		File masterFolder = new File(storageLocation); // Create a new file object using the storageLocation path
-
-		assert (storageLocation != null) : "Error: StorageLocation cannot be null"; // Checks that it actually finds/creates a storage location
+		
+		File masterFolder = new File(masterFolderFilepath); // Create a new file object using the storageLocation path
+		sampleFolder = new File(sampleFolderFilepath);
+		projectFolder = new File(projectFolderFilepath);
+		
+		if (masterFolder.exists()) {
+			if (!sampleFolder.exists()) {
+				sampleFolder.mkdir();
+			}
+			if (!projectFolder.exists()) {
+				projectFolder.mkdir();
+			}
+		} else {
+			masterFolder.mkdir();
+			sampleFolder.mkdir();
+			projectFolder.mkdir();
+		}
+		
+		assert (masterFolderFilepath != null) : "Error: StorageLocation cannot be null"; // Checks that it actually finds/creates a storage location
 		assert (masterFolder.exists()) : "Error: master storage folder doesn't exist"; // Checks that the storageLocation path actually loads a file directory/folder
 		assert (masterFolder.isDirectory()) : "Error: master storage folder isn't a file directory"; // Checks that the  storageLocation path actually loads a file directory/folder
 		String[] masterFolderItems = masterFolder.list();
 		for (int i = 0; i < masterFolderItems.length; i++) {
-			assert (new File(storageLocation + "\\" + masterFolderItems[i]).isDirectory())
-					: "Error: master folder should only have subfolders in it"; // Check each item in the master folder
-																				// is a file directory/folder
+			assert (new File(masterFolderFilepath + "\\" + masterFolderItems[i]).isDirectory()) : "Error: master folder should only have subfolders in it"; // Check each item in the master folder is a file directory/folder
 		}
 		assert (masterFolderItems.length == 2) : "Error: master storage folder is missing one or more subfolders"; // Checks that the master folder has at least 2 sub-folders.
 	}
@@ -49,17 +66,16 @@ public class StorageManager {
 	 * Should return null if there are no sound files.
 	 */
 	public ArrayList<File> getSoundFiles() {
-
 		ArrayList<File> soundFiles = new ArrayList<File>();
-
+		String[] sampleFolderList = sampleFolder.list();
+		
+		for (String item : sampleFolderList) {
+			soundFiles.add(new File(sampleFolderFilepath+"\\"+item));
+		}
+		
 		for (int i = 0; i < soundFiles.size(); i++) {
-			soundFiles.add(getSoundFile("SoundName.wav"));
-			soundFiles.add(getSoundFile("SoundName.exe"));
-			soundFiles.add(null);
-
 			assert (soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; // Checks that every retrieved file actually exists
-			assert (checkFileType(soundFiles.get(i), ".wav"))
-					: "Error: One or more of the selected files isnt of the .wav filetype extension"; // Checks that every retrieved file is a wav file
+			assert (checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the selected files isnt of the .wav filetype extension"; // Checks that every retrieved file is a wav file
 		}
 		return soundFiles;
 	}
@@ -74,36 +90,26 @@ public class StorageManager {
 	 * @throws IOException
 	 */
 	public File getSoundFile(String name) {
-
-		File soundFile = new File("Music.wav");
-		File secondarySoundFile = new File("SoundName.wav");
-
+		String[] sampleFolderList = sampleFolder.list();
+		File soundFile = null;
+		
+		int count = 0;
+		while (soundFile == null && count < sampleFolderList.length) {
+			if (sampleFolderList[count].matches(name)) {
+				soundFile = new File(sampleFolderFilepath+"\\"+name);
+			}
+			count++;
+		}
+		
 		/*
 		 * Tests: Test Case for searching for a specific file that does exist: file is
 		 * found correctly test case for searching for a file that does not exist: throws
 		 * an error
 		 */
 
-		assert (soundFile.getName() == name) : "Error: Retrieved file doesnt match the requested file"; // Checks that the retrieved file actually matches the requested file
-
-		if (soundFile.exists()) {
-			try {
-				soundFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Error");
-			}
-			return soundFile;
-		} else if (secondarySoundFile.exists()) {
-			try {
-				secondarySoundFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-				System.out.println("Error");
-			}
-			return secondarySoundFile;
-		}
-		return null;
+		assert (soundFile.getName().matches(name)) : "Error: Retrieved file doesnt match the requested file"; // Checks that the retrieved file actually matches the requested file
+		
+		return soundFile;
 	}
 
 	/**
@@ -112,29 +118,19 @@ public class StorageManager {
 	 *         folder. Should return null if there are no sound files.
 	 */
 	public ArrayList<File> getProjectFiles() {
-
 		ArrayList<File> projectFiles = new ArrayList<File>();
+		String[] projectFolderList = projectFolder.list();
+		
+		for (String item : projectFolderList) {
+			File currentItem = new File(projectFolderFilepath+"\\"+item);
+			if (checkFileType(currentItem, "txt")) {
+				projectFiles.add(currentItem);
+			}
+		}
 
 		for (int i = 0; i < projectFiles.size(); i++) {
-			try {
-				projectFiles.add(getProjectFile("File.txt"));
-				projectFiles.add(getProjectFile("File.exe"));
-				projectFiles.add(getProjectFile("File.wav"));
-				
-				if (projectFiles.get(i).exists()) {
-					System.out.println("This has completed sucessfully!");
-				} else {
-					System.out.println("This has completed unsucessfully!");
-				}
-
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-				System.out.println("Error");
-			}
-
 			assert (projectFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; // Checks that every retrieved file actually exists
-			assert (checkFileType(projectFiles.get(i), ".txt"))
-					: "Error: One or more of the selected files isnt of the .txt filetype extension"; // Checks that every retrieved file is a txt file
+			assert (checkFileType(projectFiles.get(i), ".txt")) : "Error: One or more of the selected files isnt of the .txt filetype extension"; // Checks that every retrieved file is a txt file
 		}
 		return projectFiles;
 	}
@@ -147,35 +143,26 @@ public class StorageManager {
 	 * @param name - The name of the desired project file
 	 * @return A File object of the desired file
 	 */
-	public File getProjectFile(String name) throws FileNotFoundException {
-
-		File projectFile = new File("");
-		File secondaryProjectFile = new File("");
-
+	public File getProjectFile(String name) { //throws FileNotFoundException {
+		String[] projectFolderList = projectFolder.list();
+		File projectFile = null;
+		
+		int count = 0;
+		while (projectFile == null && count < projectFolderList.length) {
+			if (projectFolderList[count].matches(name)) {
+				projectFile = new File(projectFolderFilepath+"\\"+name);
+			}
+			count++;
+		}
+		
 		/*
 		 * Tests: test case for searching for a specific file that does exist: file is
 		 * found correctly test case for searching for a file that does not exist: throws
 		 * an error
 		 */
-
-		assert (projectFile.getName() == name) : "Error: Retrieved file doesnt match the requested file"; // Checks that the retrieved file actually matches the requested file
+		assert (projectFile.getName().matches(name)) : "Error: Retrieved file doesnt match the requested file"; // Checks that the retrieved file actually matches the requested file
 		
-		if (projectFile.exists()) {
-			try {
-				projectFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return projectFile;
-		} else if (secondaryProjectFile.exists()) {
-			try {
-				secondaryProjectFile.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-			return secondaryProjectFile;
-		}
-		return null;
+		return projectFile;
 	}
 
 	/**
@@ -200,7 +187,7 @@ public class StorageManager {
 	}
 
 	public String getStorageLocation() {
-		return storageLocation;
+		return masterFolderFilepath;
 	}
 
 }

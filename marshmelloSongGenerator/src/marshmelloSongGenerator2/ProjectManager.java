@@ -13,13 +13,6 @@ import java.util.Scanner;
 public class ProjectManager extends StorageManager {
 	
 	/**
-	 * Temporary solution to setting the storageLocation string while changing as little of storageManager as possible
-	 */
-	public ProjectManager() {
-		storageLocation = ".\\testFiles";
-	}
-	
-	/**
 	 * Converts a given ArrayList<File> of soundFiles used to create a finished song project into a saveable text file.
 	 * Will create a text file named after the given projectName and save the contents of the ArrayList in the file.
 	 * @param projectData - The given ArrayList of sound files used in a finished song project
@@ -27,7 +20,7 @@ public class ProjectManager extends StorageManager {
  	 */
 	public void saveProject(ArrayList<File> projectData, String projectName) {
 		//Create the file object that's used to create the new text file
-		File project = new File(storageLocation+"\\projectFiles\\"+projectName+".txt");
+		File project = new File(masterFolderFilepath+"\\projectFiles\\"+projectName);
 		
 		try {
 			//Creates the text file
@@ -48,7 +41,7 @@ public class ProjectManager extends StorageManager {
 		}
 		
 		//Checks that a file can be found in the project files folder that matches the name of the newly created file
-		assert (new File(storageLocation+"\\projectFiles\\"+projectName+".txt").exists()) : "Error: No file with the given filename exists in the projectFiles folder";
+		assert (new File(masterFolderFilepath+"\\projectFiles\\"+projectName+".txt").exists()) : "Error: No file with the given filename exists in the projectFiles folder";
 		
 		try {
 			Scanner reader = new Scanner(project);

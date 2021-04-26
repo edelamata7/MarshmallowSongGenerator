@@ -34,7 +34,12 @@ public class CreateSongTests {
 		ProjectList test1 = new ProjectList(wavFiles, soundFiles);
 		
 		CreateSong createSongTest = new SongGenerator();
-		createSongTest.createProject(test1, "RESULT_completeWavFileTest1");
+		try {
+			createSongTest.createProject(test1, "RESULT_completeWavFileTest");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		System.out.println("TEST COMPLETE");
 	}
 	

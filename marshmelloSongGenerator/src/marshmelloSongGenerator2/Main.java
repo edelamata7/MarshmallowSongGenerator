@@ -1,6 +1,7 @@
 package marshmelloSongGenerator2;
 
 public class Main {
+	
 
 	/**
 	 * Program's driver method
@@ -8,8 +9,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-    
-    
+		new Interface();
 	}
 
 }
