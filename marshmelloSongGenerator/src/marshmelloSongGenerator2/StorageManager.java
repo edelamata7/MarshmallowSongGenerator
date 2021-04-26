@@ -75,7 +75,7 @@ public class StorageManager {
 		
 		for (int i = 0; i < soundFiles.size(); i++) {
 			assert (soundFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; // Checks that every retrieved file actually exists
-			assert (checkFileType(soundFiles.get(i), ".wav")) : "Error: One or more of the selected files isnt of the .wav filetype extension"; // Checks that every retrieved file is a wav file
+			assert (checkFileType(soundFiles.get(i), "wav")) : "Error: One or more of the selected files isnt of the .wav filetype extension"; // Checks that every retrieved file is a wav file
 		}
 		return soundFiles;
 	}
@@ -130,7 +130,7 @@ public class StorageManager {
 
 		for (int i = 0; i < projectFiles.size(); i++) {
 			assert (projectFiles.get(i).exists()) : "Error: One or more of the given files doesn't exist"; // Checks that every retrieved file actually exists
-			assert (checkFileType(projectFiles.get(i), ".txt")) : "Error: One or more of the selected files isnt of the .txt filetype extension"; // Checks that every retrieved file is a txt file
+			assert (checkFileType(projectFiles.get(i), "txt")) : "Error: One or more of the selected files isnt of the .txt filetype extension"; // Checks that every retrieved file is a txt file
 		}
 		return projectFiles;
 	}
@@ -174,12 +174,12 @@ public class StorageManager {
 	 * @return
 	 */
 	public boolean checkFileType(File file, String fileExtension) {
-		assert (fileExtension.matches("\\..*")) : "Error: The value of fileExtension isnt a valid fileExtension"; // Checks that the given file extension is in the correct format (This RE may need to be changed in the future)
+		//assert (fileExtension.matches("\\..*")) : "Error: The value of fileExtension isnt a valid fileExtension"; // Checks that the given file extension is in the correct format (This RE may need to be changed in the future)
 		String filetypeRE = ".*(\\." + fileExtension + ")$";
 		Pattern filetypePattern = Pattern.compile(filetypeRE);
 		Matcher filetypeMatcher = filetypePattern.matcher(file.getName());
 		if (filetypeMatcher.find()) {
-			assert (filetypeMatcher.group() == file.getName()) : "Error: matched file doesn't equal the full file name"; // Checks the regex worked properly: it should match to then entire filename
+			assert (filetypeMatcher.group().equals(file.getName())) : "Error: matched file doesn't equal the full file name"; // Checks the regex worked properly: it should match to then entire filename
 			return true;
 		} else {
 			return false;

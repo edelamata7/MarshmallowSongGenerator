@@ -8,7 +8,8 @@ import wavFile.WavFile;
 public class SongGeneratorTest {
 	
 	public static void main(String[] args) {
-		new SongGeneratorTest().test1();
+		//new SongGeneratorTest().test1();
+		new SongGeneratorTest().test2();
 	}
 	
 	public void test1() {
@@ -27,6 +28,16 @@ public class SongGeneratorTest {
 		
 		for (int i = 0; i<resultFiles.size(); i++) {
 			System.out.println(resultFiles.get(i).getName());
+		}
+	}
+	
+	public void test2() {
+		SongGenerator tester = new SongGenerator();
+		
+		try {
+			tester.generateSong();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

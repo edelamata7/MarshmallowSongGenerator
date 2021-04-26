@@ -41,7 +41,6 @@ public class SongEditorInterface implements ActionListener {
 		JFrame frame = new JFrame();
 		frame.setSize(1000, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		// master panel everything else is attached to
 		JPanel mainPanel = new JPanel();
