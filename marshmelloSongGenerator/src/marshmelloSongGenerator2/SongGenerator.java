@@ -18,12 +18,6 @@ public class SongGenerator extends CreateSong {
 	public void generateSong() throws Exception {
 		ProjectList newProject = createProjectList(projectManager.getSoundFiles());
 		String projectName = createName();
-		
-		//System.out.println(projectName);
-		
-		//System.out.println(newProject.getFiles().size());
-		//System.out.println(newProject.getWavFiles().size());
-		
 		createProject(newProject, projectName);
 	}
 	

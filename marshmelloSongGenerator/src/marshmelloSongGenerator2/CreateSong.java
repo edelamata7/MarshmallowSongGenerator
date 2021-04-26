@@ -170,6 +170,7 @@ public abstract class CreateSong {
 				wavFileList.add(newWavFile);
 			} catch (Exception e) {
 				e.printStackTrace();
+				System.out.println(soundFiles.get(i).getName());
 			}
 		}
 		
